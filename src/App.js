@@ -1,13 +1,32 @@
-import Login from './Components/Form/Login/Login';
+import Login from './pages/Login/Login';
+import About from './pages/About/About'
+import Admin from './pages/Admin/Admin';
+import User from './pages/User/User';
+import NotFound from './pages/NotFound/NotFound';
+import RedirectUser from './pages/Redirect/RedirectUser';
+
+import Private from './Components/PrivateRoute/PrivateRoute';
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import './App.css';
+
+// import {  } from ''
 
 function App() {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">
-      <main className="w-3/4 max-w-3xl bg-blue-100 rounded-md p-8 md:p-10 shadow-md">
-        <Login />
-      </main>
-    </div>
+    <BrowserRouter>
+      <Routes>        
+        <Route path="/login" element={<Login />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/redirect" element={<RedirectUser />}/>
+        
+        <Route path="/admin"  element={<Private role="admin"><Admin /></Private>} />
+        <Route path="/user"   element={<Private role="user"> <User /> </Private>} />
+        
+        <Route path="*" element={<NotFound />}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
