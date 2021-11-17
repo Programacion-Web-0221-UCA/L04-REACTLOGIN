@@ -38,9 +38,12 @@ export const UserProvider = (props) => {
 
   const setNewToken = (newToken) => {
     if (newToken) {
-      setToken(newToken);
       localStorage.setItem(TOKEN_KEY, newToken);
+    }else {
+      localStorage.removeItem(TOKEN_KEY);
     }
+
+    setToken(newToken);
   };
 
   const login = useCallback((username, password) => {
