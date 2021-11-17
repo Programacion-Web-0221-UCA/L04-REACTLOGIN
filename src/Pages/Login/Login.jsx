@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserContext } from "../../Contexts/UserContext";
+import { useNavigate } from 'react-router-dom';
+
+const routes = {
+  "admin": "/admin",
+  "user": "/user"
+}
 
 export default function Login(){
-    const context = useUserContext() 
+    const context = useUserContext()
+    const navigate = useNavigate(); 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -23,6 +30,12 @@ export default function Login(){
             console.error(error)
         }
     }
+
+    useEffect(()=> {
+      if(context.user) {
+        navigate(routes[context.user.role] ?? "/");
+      }
+    }, [context.user]);
 
     return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">

@@ -58,11 +58,17 @@ export const UserProvider = (props) => {
     return loginFetch(username, password);
   }, []);
 
+  const logout = () => {
+    setNewToken(undefined);
+    setUser(undefined);
+  }
+
   const providerValue = useMemo(() => {
     return {
       user: user,
       login: login,
       token: token,
+      logout: logout
     };
   }, [user, token]);
 
@@ -75,6 +81,10 @@ export const UserProvider = (props) => {
 
 export const useUserContext = () => {
   const context = useContext(UserContext);
+
+  if(!context) {
+    throw new Error("No estás dentro del UserProvider")
+  }
 
   return context;
 };
