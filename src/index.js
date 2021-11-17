@@ -8,6 +8,7 @@ import { UserProvider } from './contexts/UserContext'
 
 ReactDOM.render(
   <React.StrictMode>
+  {/* Todo lo que esté dentro de UserProvider va a tener acceso a las variables del contexto */}
   <UserProvider>
     <App />
   </UserProvider>

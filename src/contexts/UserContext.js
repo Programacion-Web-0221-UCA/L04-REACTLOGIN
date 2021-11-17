@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react"
 import userServices from "../services/user.services"
 
-const userContext = React.createContext();
+// Creación del contexto
+const UserContext = React.createContext();
 
 const TOKEN_KEY = "token";
 
+// Con userProvider especificamos qué componentes tienen acceso al contexto (en index.js)
 export const UserProvider = (props) => {
     const [token, setToken] = useState(undefined);
     const [user, setUser] = useState(undefined);
@@ -18,6 +20,7 @@ export const UserProvider = (props) => {
         const verifyCurrentToken = async () => {
             const tokenLS = localStorage.getItem(TOKEN_KEY);
 
+            // Verificamos a qué usuario pertenece el token y lo asignamos
             if(tokenLS) {
                 const { username, role } = await userServices.verifyToken(tokenLS);
 
@@ -27,20 +30,21 @@ export const UserProvider = (props) => {
                 }
             }
         }
-
         verifyCurrentToken();
     }, [token])
 
-    // Devuelve una función
+    // useCallback devuelve una función
     const login = useCallback((username, password) => {
         const loginAsync = async () => {
             let status = false;
 
             try {
+                // Recibimos el token que devuelve la API según el username y password
                 const { token: tokenResponse } = await userServices.login(username, password);
 
                 if(tokenResponse) {
                     setTokenAll(tokenResponse);
+                    // Usuario loggeado
                     status = true;
                 }
             }
@@ -59,7 +63,7 @@ export const UserProvider = (props) => {
     const logout = useCallback(() => {
         setUser(undefined);
         setTokenAll(undefined);
-    })
+    }, [])
 
     // Valores que queremos guardar (devuelve un objeto)
     const value = useMemo(() => ({
@@ -69,11 +73,13 @@ export const UserProvider = (props) => {
         logout: logout
     }), [token, user, login, logout]);
 
-    return <userContext.Provider value = { value } {...props} />
+    // Retornamos el componente Provider que corresponde a UserContext con los valores
+    return <UserContext.Provider value = { value } {...props} />
 }
 
+// useUserContext nos permite utilizar lo que está dentro del contexto en otros componentes
 export const useUserContext = () => {
-    const context = React.useContext(userContext);
+    const context = React.useContext(UserContext);
 
     if(!context) {
         throw new Error("Ha ocurrido un error");

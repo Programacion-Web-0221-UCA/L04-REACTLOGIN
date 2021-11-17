@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useUserContext } from "../../contexts/UserContext";
 
 const Login = () => {
+    // Recibimos la función login y el token guardadas en UserContext
     const { login, token } = useUserContext();
 
     const [usernameInput, setUsernameInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
     const [error, setError] = useState(false);
 
+    // Se va guardando cada caracter que ingresamos al input
     const onChangeHandler = (e, save) => {
         save(e.target.value);
     }
