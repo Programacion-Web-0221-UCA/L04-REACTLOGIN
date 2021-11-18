@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     // Recibimos la función login y el token guardadas en UserContext
+    const navigate = useNavigate();
+
     const { login, token } = useUserContext();
 
     const [usernameInput, setUsernameInput] = useState("");
@@ -23,6 +26,13 @@ const Login = () => {
         setUsernameInput("");
         setPasswordInput("");
     }
+
+    useEffect(()=>{
+        console.log(token);
+        if(token){
+            navigate("/user");
+        }
+    }, [token, navigate]);
 
     return (
         <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500">
