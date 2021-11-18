@@ -30,7 +30,7 @@ const Login = () => {
     useEffect(()=>{
         console.log(token);
         if(token){
-            navigate("/user");
+            navigate("/redirect");
         }
     }, [token, navigate]);
 
